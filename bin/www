@@ -4,7 +4,11 @@
  * Module dependencies.
  */
 
+<<<<<<< HEAD
 let app = require('../app');
+=======
+const app = require('../app');
+>>>>>>> b127699d40c3454eb1cbc06504c33da37136f077
 const debug = require('debug')('todotodot-server:server');
 const http = require('http');
 
