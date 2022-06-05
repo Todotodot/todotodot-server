@@ -6,7 +6,7 @@ exports.createTodo = catchAsync(async (req, res, next) => {
   const { title, content } = req.body;
 
   if (!title) {
-    res.json({
+    return res.json({
       result: "error",
       error: {
         message: "Todo의 제목을 입력하세요.",
@@ -23,10 +23,41 @@ exports.createTodo = catchAsync(async (req, res, next) => {
     creator: user._id,
   });
 
-  user.personalTodos.push(newTodo._id);
+  const { groupId } = req.params;
+
+  if (groupId) {
+    const group = user.group.findOne({ groupId });
+
+    group.todos.push(newTodo._id);
+  } else {
+    user.personalTodos.push(newTodo.id);
+  }
+
   await user.save();
 
-  res.json({
+  return res.json({
+    result: "success",
+  });
+});
+
+exports.updateTodo = catchAsync(async (req, res, next) => {
+  const { title, content } = req.body;
+
+  if (!title) {
+    return res.json({
+      result: "error",
+      error: {
+        message: "Todo의 제목을 입력하세요.",
+        status: 400,
+      },
+    });
+  }
+
+  const { todoId } = req.params;
+
+  await Todo.findOneAndUpdate({ _id: todoId }, { title, content });
+
+  return res.json({
     result: "success",
   });
 });
