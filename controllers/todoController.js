@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const Todo = require("../models/Todo");
-const { catchAsync } = require("../utils/catchAsync");
+const catchAsync = require("../utils/catchAsync");
 
 exports.createTodo = catchAsync(async (req, res, next) => {
   const { title, content } = req.body;
@@ -23,7 +23,7 @@ exports.createTodo = catchAsync(async (req, res, next) => {
     creator: user._id,
   });
 
-  user.personalTodos.push(newTodo);
+  user.personalTodos.push(newTodo._id);
   await user.save();
 
   res.json({
