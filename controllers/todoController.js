@@ -46,9 +46,7 @@ exports.createTodo = catchAsync(async (req, res, next) => {
 
   await user.save();
 
-  return res.json({
-    result: "success",
-  });
+  return res.json({ result: "success" });
 });
 
 exports.updateTodo = catchAsync(async (req, res, next) => {
@@ -78,16 +76,14 @@ exports.updateTodo = catchAsync(async (req, res, next) => {
 
   await Todo.findByIdAndUpdate({ _id: todoId }, { title, content });
 
-  return res.json({
-    result: "success",
-  });
+  return res.json({ result: "success" });
 });
 
 exports.updateTodo = catchAsync(async (req, res, next) => {
   const { title, content } = req.body;
 
   if (!title) {
-    res.json({
+    return res.json({
       result: "error",
       error: {
         message: "Todo의 제목을 입력하세요.",
@@ -96,9 +92,11 @@ exports.updateTodo = catchAsync(async (req, res, next) => {
     });
   }
 
-  await Todo.findOneAndUpdate({ _id: req.params.todoId }, { title, content });
+  const { todoId } = req.params;
 
-  res.json({
+  await Todo.findOneAndUpdate({ _id: todoId }, { title, content });
+
+  return res.json({
     result: "success",
   });
 });
