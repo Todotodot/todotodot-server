@@ -7,8 +7,14 @@ exports.readIndex = catchAsync(async (req, res, next) => {
   const currentUser = User.findById(user._id);
 
   if (buttonType === "group") {
-    return res.json(currentUser.group);
+    return res.json({
+      result: "success",
+      data: currentUser.group,
+    });
   }
 
-  return res.json(currentUser.personalTodos);
+  return res.json({
+    result: "success",
+    data: currentUser.personalTodos,
+  });
 });

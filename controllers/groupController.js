@@ -9,7 +9,7 @@ exports.createGroup = catchAsync(async (req, res, next) => {
       result: "error",
       error: {
         message: "Group의 이름을 입력하세요.",
-        status: 500,
+        status: 400,
       },
     });
   }
@@ -23,15 +23,15 @@ exports.createGroup = catchAsync(async (req, res, next) => {
 });
 
 exports.updateGroup = catchAsync(async (req, res, next) => {
-  const { title } = req.body;
   const groupId = req.params.id;
+  const { title } = req.body;
 
   if (!title) {
     return res.json({
       result: "error",
       error: {
         message: "Group의 이름을 입력하세요.",
-        status: 500,
+        status: 400,
       },
     });
   }
