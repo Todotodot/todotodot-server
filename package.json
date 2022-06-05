@@ -1,0 +1,30 @@
+{
+  "name": "todotodot-server",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "cors": "2.8.5",
+    "debug": "4.3.4",
+    "dotenv": "16.0.1",
+    "express": "4.18.1",
+    "firebase-admin": "10.2.0",
+    "http-errors": "2.0.0",
+    "jsonwebtoken": "8.5.1",
+    "mongoose": "6.3.5",
+    "morgan": "1.10.0",
+    "socket.io": "4.5.1"
+  },
+  "devDependencies": {
+    "eslint": "8.17.0",
+    "husky": "8.0.1",
+    "jest": "28.1.0",
+    "nodemon": "2.0.16",
+    "prettier": "2.6.2",
+    "supertest": "6.2.3"
+  }
+}
