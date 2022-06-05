@@ -5,7 +5,7 @@ const GroupController = require("../controllers/groupController");
 const router = express.Router();
 
 router.post("/", isLoggedIn, GroupController.createGroup);
-router.patch("/:id", isLoggedIn, GroupController.updateGroup);
-router.delete("/:id", isLoggedIn, GroupController.deleteGroup);
+router.patch("/:groupId", isLoggedIn, GroupController.updateGroup);
+router.delete("/:groupId", isLoggedIn, GroupController.deleteGroup);
 
 module.exports = router;
