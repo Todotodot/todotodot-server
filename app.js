@@ -1,9 +1,12 @@
 const express = require("express");
 const loader = require("./loader");
+
 const index = require("./routes/index");
-const { unknownPageHandler, errorHandler } = require("./middlewares/errorHandler");
 const user = require("./routes/user");
 // const group = require("./routes/group");
+
+const { unknownPageHandler, errorHandler } = require("./middlewares/errorHandler");
+
 const app = express();
 
 (async () => {
