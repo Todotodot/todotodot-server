@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json({ message: "hello" });
-});
+const IndexController = require("../controllers/indexController");
+
+router.post("/login", IndexController.login);
 
 module.exports = router;
