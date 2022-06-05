@@ -1,9 +1,12 @@
 const express = require("express");
 const loader = require("./loader");
+
 const index = require("./routes/index");
-const { unknownPageHandler, errorHandler } = require("./middlewares/errorHandler");
-// const user = require("./routes/user");
+const user = require("./routes/user");
 // const group = require("./routes/group");
+
+const { unknownPageHandler, errorHandler } = require("./middlewares/errorHandler");
+
 const app = express();
 
 (async () => {
@@ -11,7 +14,7 @@ const app = express();
 
   // app.use(미들웨어); 미들웨어
   app.use("/", index);
-  // app.use("/users", user);
+  app.use("/users", user);
   // app.use("/groups", group);
 
   app.use(unknownPageHandler);
