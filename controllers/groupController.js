@@ -1,4 +1,4 @@
-const mongoose = require("../loader/mongoose");
+const mongoose = require("mongoose");
 const Group = require("../models/Group");
 const catchAsync = require("../utils/catchAsync");
 

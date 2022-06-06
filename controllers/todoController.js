@@ -1,4 +1,4 @@
-const mongoose = require("../loader/mongoose");
+const mongoose = require("mongoose");
 const User = require("../models/User");
 const Todo = require("../models/Todo");
 const catchAsync = require("../utils/catchAsync");
@@ -76,7 +76,7 @@ exports.updateTodo = catchAsync(async (req, res, next) => {
     });
   }
 
-  await Todo.findOneAndUpdate({ _id: todoId }, { title, content });
+  await Todo.findByIdAndUpdate({ _id: todoId }, { title, content });
 
   return res.json({
     result: "success",
