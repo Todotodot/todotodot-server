@@ -47,7 +47,7 @@ exports.createTodo = catchAsync(async (req, res, next) => {
 
   const { groupId } = req.params;
 
-  if (!mongoose.isValidObjectId(groupId)) {
+  if (groupId && !mongoose.isValidObjectId(groupId)) {
     return res.json({
       result: "error",
       error: {
@@ -99,7 +99,7 @@ exports.updateTodo = catchAsync(async (req, res, next) => {
 exports.deleteTodo = catchAsync(async (req, res, next) => {
   const { groupId, todoId } = req.params;
 
-  if (!mongoose.isValidObjectId(groupId)) {
+  if (groupId && !mongoose.isValidObjectId(groupId)) {
     return res.json({
       result: "error",
       error: {
