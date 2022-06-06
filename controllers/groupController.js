@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
+
 const User = require("../models/User");
 const Group = require("../models/Group");
+const Todo = require("../models/Todo");
 const catchAsync = require("../utils/catchAsync");
 
 exports.createGroup = catchAsync(async (req, res, next) => {
@@ -70,9 +72,15 @@ exports.deleteGroup = catchAsync(async (req, res, next) => {
 
   const group = await Group.findById(groupId);
 
-  if (group.members.length > 1) {
-    await User.findByIdAndUpdate(req.user.id, { $pull: { group: group._id } });
+  if (group.members.length <= 1) {
+    for (let i = 0; i < group.todos.length; i++) {
+      await Todo.findByIdAndDelete(group.todos[i]._id);
+    }
+
+    await Group.findByIdAndDelete(groupId);
   }
+
+  await User.findByIdAndUpdate(req.user.id, { $pull: { group: group._id } });
 
   return res.json({ result: "success" });
 });
