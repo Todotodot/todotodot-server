@@ -104,7 +104,7 @@ exports.updateTodo = catchAsync(async (req, res, next) => {
     });
   }
 
-  await Todo.findOneAndUpdate({ _id: todoId }, { title, content });
+  await Todo.findByIdAndUpdate({ _id: todoId }, { title, content });
 
   return res.json({
     result: "success",
