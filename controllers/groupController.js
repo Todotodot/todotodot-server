@@ -1,27 +1,7 @@
 const mongoose = require("mongoose");
+const User = require("../models/User");
 const Group = require("../models/Group");
 const catchAsync = require("../utils/catchAsync");
-
-exports.getGroupTodos = catchAsync(async (req, res, next) => {
-  const { groupId } = req.params;
-
-  if (!mongoose.isValidObjectId(groupId)) {
-    return res.json({
-      result: "error",
-      error: {
-        message: "유효하지 않은 그룹입니다.",
-        status: 400,
-      },
-    });
-  }
-
-  const group = await Group.findById(groupId);
-
-  return res.json({
-    result: "success",
-    data: group.todos,
-  });
-});
 
 exports.createGroup = catchAsync(async (req, res, next) => {
   const { title } = req.body;
@@ -36,10 +16,12 @@ exports.createGroup = catchAsync(async (req, res, next) => {
     });
   }
 
-  const group = await Group.create({ title });
+  const group = await Group.create({
+    title,
+    members: [req.user.id],
+  });
 
-  group.members.push(user._id);
-  await group.save();
+  await User.findByIdAndUpdate(req.user.id, { $push: { group: group._id } });
 
   return res.json({ result: "success" });
 });
@@ -86,7 +68,11 @@ exports.deleteGroup = catchAsync(async (req, res, next) => {
     });
   }
 
-  await Group.findByIdAndDelete(groupId);
+  const group = await Group.findById(groupId);
+
+  if (group.members.length > 1) {
+    await User.findByIdAndUpdate(req.user.id, { $pull: { group: group._id } });
+  }
 
   return res.json({ result: "success" });
 });
