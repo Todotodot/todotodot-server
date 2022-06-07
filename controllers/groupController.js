@@ -70,17 +70,10 @@ exports.deleteGroup = catchAsync(async (req, res, next) => {
     });
   }
 
-  const group = await Group.findById(groupId);
+  const deletedGroup = await Group.findByIdAndDelete(groupId, { members: { $size: 1 } }, { new: true });
 
-  if (group.members.length <= 1) {
-    for (let i = 0; i < group.todos.length; i++) {
-      await Todo.findByIdAndDelete(group.todos[i]._id);
-    }
-
-    await Group.findByIdAndDelete(groupId);
-  }
-
-  await User.findByIdAndUpdate(req.user.id, { $pull: { group: group._id } });
+  await Todo.deleteMany({ _id: { $in: deletedGroup.todos } });
+  await User.findByIdAndUpdate(req.user.id, { $pull: { group: groupId } });
 
   return res.json({ result: "success" });
 });

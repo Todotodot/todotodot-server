@@ -119,7 +119,7 @@ exports.deleteTodo = catchAsync(async (req, res, next) => {
     });
   }
 
-  Todo.findByIdAndDelete(todoId);
+  await Todo.findByIdAndDelete(todoId);
 
   if (groupId) {
     await Group.findByIdAndUpdate(groupId, { $pull: { todos: todoId } });
