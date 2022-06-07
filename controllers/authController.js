@@ -5,15 +5,15 @@ const { secretKey, option } = require("../config/secretkey");
 const User = require("../models/User");
 const catchAsync = require("../utils/catchAsync");
 
-exports.login = catchAsync(async (req, res) => {
+exports.login = catchAsync(async (req, res, next) => {
   const idToken = req.headers.authorization.split(" ")[1];
   const verifiedToken = await firebaseAdminAuth.verifyIdToken(idToken);
 
-  if (!verifiedToken) {
+  if (!verifiedToken || !idToken) {
     res.json({
       result: "error",
       error: {
-        message: "Unauthorized",
+        message: "유효하지 않은 유저입니다.",
         status: 401,
       },
     });
@@ -40,11 +40,4 @@ exports.login = catchAsync(async (req, res) => {
       token: accessToken,
     });
   }
-  res.json({
-    result: "error",
-    error: {
-      message: "Unauthorized",
-      status: 401,
-    },
-  });
 });
