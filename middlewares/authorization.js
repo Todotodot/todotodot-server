@@ -4,7 +4,7 @@ const User = require("../models/User");
 const catchAsync = require("../utils/catchAsync");
 
 const isLoggedIn = catchAsync(async (req, res, next) => {
-  const token = req.headers.Authorization.split(" ")[1];
+  const token = req.headers.authorization.split(" ")[1];
 
   if (!token) {
     return res.json({
@@ -16,10 +16,11 @@ const isLoggedIn = catchAsync(async (req, res, next) => {
     });
   }
 
-  const userId = jwt.verify(token, process.env.SECRET_KEY);
-  const user = await User.findById(userId).lean();
+  const { id } = jwt.verify(token, process.env.SECRET_KEY);
+  const user = await User.findById(id).lean();
 
   req.user = user;
+
   return next();
 });
 
