@@ -1,9 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const { firebaseAdminAuth } = require("../config/firebase");
-const secretKey = require("../config/secretkey").secretKey;
-const options = require("../config/secretkey").option;
-
+const { secretKey, option } = require("../config/secretkey");
 const User = require("../models/User");
 
 exports.login = async (req, res) => {
@@ -22,20 +20,19 @@ exports.login = async (req, res) => {
     }
 
     const { name, email } = verifiedToken;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).lean();
+    let id = user._id;
 
     if (!user) {
-      await User.create({
+      const newUser = await User.create({
         name,
         email,
       });
+
+      id = newUser._id;
     }
 
-    const payload = {
-      email: email,
-    };
-
-    const accessToken = jwt.sign(payload, secretKey, options);
+    const accessToken = jwt.sign({ id }, secretKey, option);
 
     if (accessToken) {
       res.json({
