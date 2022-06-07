@@ -20,19 +20,16 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   const { name, email } = verifiedToken;
-  const user = await User.findOne({ email }).lean();
-  let id = user._id;
+  let user = await User.findOne({ email }).lean();
 
   if (!user) {
-    const newUser = await User.create({
+    user = await User.create({
       name,
       email,
     });
-
-    id = newUser._id;
   }
 
-  const accessToken = jwt.sign({ id }, secretKey, option);
+  const accessToken = jwt.sign({ id: user._id }, secretKey, option);
 
   if (accessToken) {
     return res.json({
