@@ -10,7 +10,7 @@ exports.login = catchAsync(async (req, res, next) => {
   const verifiedToken = await firebaseAdminAuth.verifyIdToken(idToken);
 
   if (!verifiedToken || !idToken) {
-    res.json({
+    return res.json({
       result: "error",
       error: {
         message: "유효하지 않은 유저입니다.",
@@ -35,7 +35,7 @@ exports.login = catchAsync(async (req, res, next) => {
   const accessToken = jwt.sign({ id }, secretKey, option);
 
   if (accessToken) {
-    res.json({
+    return res.json({
       result: "success",
       token: accessToken,
     });
