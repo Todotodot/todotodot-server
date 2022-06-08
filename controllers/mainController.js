@@ -1,20 +1,23 @@
+const Todo = require("../models/Todo");
 const User = require("../models/User");
+const Group = require("../models/Group");
 const catchAsync = require("../utils/catchAsync");
 
 exports.getGroupsOrPersonalTodos = catchAsync(async (req, res, next) => {
-  const { user } = req;
-  const { buttonType } = req.query;
-  const currentUser = User.findById(user._id);
+  const { _id } = req.user;
 
-  if (buttonType === "group") {
-    return res.json({
-      result: "success",
-      data: currentUser.group,
-    });
-  }
+  const { name, level, experience, personalTodos, group } = await User.findById(_id).lean();
+  const currentUsersTodo = await Todo.find().in("_id", [personalTodos]).lean();
+  const currentUsersGroup = await Group.find().in("_id", [group]).lean();
 
   return res.json({
     result: "success",
-    data: currentUser.personalTodos,
+    user: {
+      name,
+      level,
+      experience,
+      todos: currentUsersTodo,
+      groups: currentUsersGroup,
+    },
   });
 });
