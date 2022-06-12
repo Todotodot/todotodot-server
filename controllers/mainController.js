@@ -19,12 +19,13 @@ exports.getGroupsOrPersonalTodos = catchAsync(async (req, res, next) => {
   }
 
   const { name, level, experience, personalTodos, group } = await User.findById(_id).lean();
-  const currentUsersTodo = await Todo.find().in("_id", [personalTodos]).lean();
-  const currentUsersGroup = await Group.find().in("_id", [group]).lean();
+  const currentUsersTodo = await Todo.find({ _id: { $in: personalTodos } }).lean();
+  const currentUsersGroup = await Group.find({ _id: { $in: group } }).lean();
 
   return res.json({
     result: "success",
     user: {
+      id: _id,
       name,
       level,
       experience,

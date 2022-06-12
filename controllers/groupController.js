@@ -28,6 +28,7 @@ exports.getGroup = catchAsync(async (req, res, next) => {
 
 exports.createGroup = catchAsync(async (req, res, next) => {
   const { title } = req.body;
+  const { _id } = req.user;
 
   if (!title) {
     return res.json({
@@ -41,10 +42,10 @@ exports.createGroup = catchAsync(async (req, res, next) => {
 
   const group = await Group.create({
     title,
-    members: [req.user.id],
+    members: [_id],
   });
 
-  await User.findByIdAndUpdate(req.user.id, { $push: { group: group._id } });
+  await User.findByIdAndUpdate(_id, { $push: { group: group._id } });
 
   return res.json({ result: "success" });
 });
@@ -91,10 +92,10 @@ exports.deleteGroup = catchAsync(async (req, res, next) => {
     });
   }
 
-  const deletedGroup = await Group.findByIdAndDelete(groupId, { members: { $size: 1 } }, { new: true });
+  const deletedGroup = await Group.findByIdAndDelete(groupId).where("members").size(1);
 
   await Todo.deleteMany({ _id: { $in: deletedGroup.todos } });
-  await User.findByIdAndUpdate(req.user.id, { $pull: { group: groupId } });
+  await User.findByIdAndUpdate(req.user._id, { $pull: { group: groupId } });
 
   return res.json({ result: "success" });
 });

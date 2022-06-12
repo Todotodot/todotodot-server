@@ -8,7 +8,6 @@ const todoSchema = new mongoose.Schema(
     },
     content: {
       type: String,
-      required: true,
     },
     creator: {
       type: mongoose.Schema.Types.ObjectId,
