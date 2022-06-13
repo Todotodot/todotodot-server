@@ -90,6 +90,10 @@ exports.completeTodo = catchAsync(async (req, res, next) => {
 
   await Todo.findByIdAndUpdate(todoId, { isCompleted: true });
 
+  const { userData } = req.body;
+
+  await User.findByIdAndUpdate(req.user._id, userData);
+
   return res.json({ result: "success" });
 });
 
