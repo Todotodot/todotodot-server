@@ -21,7 +21,7 @@ exports.createTodo = catchAsync(async (req, res, next) => {
   const newTodo = await Todo.create({
     title,
     content,
-    creator: req.user.id,
+    creator: req.user._id,
   });
 
   const { groupId } = req.params;
@@ -39,7 +39,7 @@ exports.createTodo = catchAsync(async (req, res, next) => {
   if (groupId) {
     await Group.findByIdAndUpdate(groupId, { $push: { todos: newTodo._id } });
   } else {
-    await User.findByIdAndUpdate(req.user.id, { $push: { personalTodos: newTodo._id } });
+    await User.findByIdAndUpdate(req.user._id, { $push: { personalTodos: newTodo._id } });
   }
 
   return res.json({ result: "success" });
@@ -103,7 +103,7 @@ exports.deleteTodo = catchAsync(async (req, res, next) => {
   if (groupId) {
     await Group.findByIdAndUpdate(groupId, { $pull: { todos: todoId } });
   } else {
-    await User.findByIdAndUpdate(req.user.id, { $pull: { personalTodos: todoId } });
+    await User.findByIdAndUpdate(req.user._id, { $pull: { personalTodos: todoId } });
   }
 
   return res.json({ result: "success" });
