@@ -75,6 +75,24 @@ exports.updateTodo = catchAsync(async (req, res, next) => {
   return res.json({ result: "success" });
 });
 
+exports.completeTodo = catchAsync(async (req, res, next) => {
+  const { todoId } = req.params;
+
+  if (!mongoose.isValidObjectId(todoId)) {
+    return res.json({
+      result: "error",
+      error: {
+        message: "유효하지 않은 Todo입니다.",
+        status: 400,
+      },
+    });
+  }
+
+  await Todo.findByIdAndUpdate(todoId, { isCompleted: true });
+
+  return res.json({ result: "success" });
+});
+
 exports.deleteTodo = catchAsync(async (req, res, next) => {
   const { groupId, todoId } = req.params;
 
