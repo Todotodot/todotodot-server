@@ -29,6 +29,10 @@ exports.login = catchAsync(async (req, res, next) => {
     });
   }
 
+  if (name !== user.name) {
+    await User.findByIdAndUpdate(user._id, { $set: { name } });
+  }
+
   const accessToken = jwt.sign({ id: user._id }, secretKey, option);
 
   if (accessToken) {

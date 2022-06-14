@@ -4,6 +4,7 @@ const User = require("../models/User");
 const catchAsync = require("../utils/catchAsync");
 
 const isLoggedIn = catchAsync(async (req, res, next) => {
+  console.log(req.headers.authorization);
   const verifier = req.headers?.authorization.split(" ")[0];
   const token = req.headers?.authorization.split(" ")[1];
   const email = req.headers?.email;
@@ -18,9 +19,14 @@ const isLoggedIn = catchAsync(async (req, res, next) => {
   }
 
   if (verifier === "Extension" && token && jwt.verify(token, process.env.SECRET_KEY) === process.env.EXTENSION_KEY) {
-    const user = await User.findOne({ email }).lean();
+    let user = await User.findOne({ email }).lean();
+
+    if (!user) {
+      user = await User.create({ email, name: email.split("@")[0] });
+    }
 
     req.user = user;
+    req.isFromExtension = true;
 
     return next();
   }
