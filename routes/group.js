@@ -1,18 +1,19 @@
 const express = require("express");
 
 const isLoggedIn = require("../middlewares/authorization");
-const GroupController = require("../controllers/groupController");
-const TodoController = require("../controllers/todoController");
+const groupController = require("../controllers/groupController");
+const todoController = require("../controllers/todoController");
 
 const router = express.Router();
 
-router.get("/:groupId", isLoggedIn, GroupController.getGroup);
-router.post("/", isLoggedIn, GroupController.createGroup);
-router.patch("/:groupId", isLoggedIn, GroupController.updateGroup);
-router.delete("/:groupId", isLoggedIn, GroupController.deleteGroup);
+router.get("/:groupId", isLoggedIn, groupController.getGroup);
+router.post("/", isLoggedIn, groupController.createGroup);
+router.patch("/:groupId", isLoggedIn, groupController.updateGroup);
+router.delete("/:groupId", isLoggedIn, groupController.deleteGroup);
 
-router.post("/:groupId/todos", isLoggedIn, TodoController.createTodo);
-router.patch("/:groupId/todos/:todoId", isLoggedIn, TodoController.updateTodo);
-router.delete("/:groupId/todos/:todoId", isLoggedIn, TodoController.deleteTodo);
+router.post("/:groupId/todos", isLoggedIn, todoController.createTodo);
+router.patch("/:groupId/todos/:todoId", isLoggedIn, todoController.updateTodo);
+router.patch("/:groupId/todos/:todoId/complete", isLoggedIn, todoController.completeTodo);
+router.delete("/:groupId/todos/:todoId", isLoggedIn, todoController.deleteTodo);
 
 module.exports = router;
