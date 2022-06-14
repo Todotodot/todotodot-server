@@ -4,7 +4,6 @@ const User = require("../models/User");
 const catchAsync = require("../utils/catchAsync");
 
 const isLoggedIn = catchAsync(async (req, res, next) => {
-  console.log(req.headers.authorization);
   const verifier = req.headers?.authorization.split(" ")[0];
   const token = req.headers?.authorization.split(" ")[1];
   const email = req.headers?.email;
