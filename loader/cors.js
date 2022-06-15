@@ -1,6 +1,6 @@
 const cors = require("cors");
 
-const whiteList = ["http://localhost:3000"];
+const whiteList = ["http://localhost:3000", process.env.CHROME_EXTENSION];
 const corsOption = {
   credentials: true,
   origin: (origin, callback) => {

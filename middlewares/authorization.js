@@ -18,9 +18,14 @@ const isLoggedIn = catchAsync(async (req, res, next) => {
   }
 
   if (verifier === "Extension" && token && jwt.verify(token, process.env.SECRET_KEY) === process.env.EXTENSION_KEY) {
-    const user = await User.findOne({ email }).lean();
+    let user = await User.findOne({ email }).lean();
+
+    if (!user) {
+      user = await User.create({ email, name: email.split("@")[0] });
+    }
 
     req.user = user;
+    req.isFromExtension = true;
 
     return next();
   }
