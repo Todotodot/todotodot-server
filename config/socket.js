@@ -4,7 +4,6 @@
 require("dotenv").config();
 const SocketIo = require("socket.io");
 
-const Group = require("../models/Group");
 const catchAsync = require("../utils/catchAsync");
 
 exports.socketIo = (server) => {
@@ -39,8 +38,8 @@ exports.socketIo = (server) => {
 
         socket.on("memberClick", (memberClickData) => {
           const { clickUsername, userClick } = memberClickData;
-
           const memberData = {};
+
           memberData[clickUsername] = userClick + 1;
           io.to(todoId).emit("memberClick", memberData);
         });
