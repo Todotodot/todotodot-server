@@ -1,9 +1,9 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable no-unused-vars */
 /* eslint-disable comma-dangle */
 require("dotenv").config();
 const SocketIo = require("socket.io");
 
-const User = require("../models/User");
-const Group = require("../models/Group");
 const catchAsync = require("../utils/catchAsync");
 
 exports.socketIo = (server) => {
@@ -20,26 +20,32 @@ exports.socketIo = (server) => {
     socket.on(
       "gameRoom",
       catchAsync(async (idData) => {
-        const { userId, todoId, groupId } = idData;
-
-        const user = await User.findById(userId);
-        const group = await Group.findById(groupId);
+        const { todoId } = idData;
 
         socket.join(todoId);
 
-        if (user && group) {
-          socket.to(todoId).emit("userGroupData", { user, group });
-        }
+        const counter = io.sockets.adapter.rooms.get(todoId).size;
+
+        io.to(todoId).emit("documentData", { counter });
+
+        socket.on("loadingSecond", (secondData) => {
+          io.to(todoId).emit("loadingSecond", secondData + 1);
+        });
+
+        socket.on("gameSecond", (secondData) => {
+          io.to(todoId).emit("gameSecond", secondData + 1);
+        });
 
         socket.on("memberClick", (memberClickData) => {
-          const { username, userClick } = memberClickData;
-          const memberClick = {};
-          memberClick[username] = userClick + 1;
-          socket.to(todoId).emit("memberClick", memberClick);
+          const { clickUsername, userClick } = memberClickData;
+          const memberData = {};
+
+          memberData[clickUsername] = userClick + 1;
+          io.to(todoId).emit("memberClick", memberData);
         });
 
         socket.on("totalClick", (totalClickData) => {
-          socket.to(todoId).emit("totalClick", totalClickData + 1);
+          io.to(todoId).emit("totalClick", totalClickData + 1);
         });
       })
     );

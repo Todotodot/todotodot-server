@@ -12,20 +12,24 @@ const userSchema = new mongoose.Schema(
     },
     level: {
       type: Number,
-      default: 0,
+      default: 1,
     },
     experience: {
       type: Number,
       default: 0,
     },
-    personalTodos: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Todo",
-    }],
-    group: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Group",
-    }],
+    personalTodos: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Todo",
+      },
+    ],
+    group: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Group",
+      },
+    ],
   },
   {
     versionKey: false,

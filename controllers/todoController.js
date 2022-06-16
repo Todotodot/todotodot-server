@@ -90,9 +90,9 @@ exports.completeTodo = catchAsync(async (req, res, next) => {
 
   await Todo.findByIdAndUpdate(todoId, { isCompleted: true });
 
-  const { userData } = req.body;
+  const { level, experience } = req.body;
 
-  await User.findByIdAndUpdate(req.user._id, userData);
+  await User.findByIdAndUpdate(req.user._id, { level, experience });
 
   return res.json({ result: "success" });
 });
