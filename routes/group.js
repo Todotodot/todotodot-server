@@ -9,6 +9,7 @@ const router = express.Router();
 router.get("/:groupId", isLoggedIn, groupController.getGroup);
 router.post("/", isLoggedIn, groupController.createGroup);
 router.patch("/:groupId", isLoggedIn, groupController.updateGroup);
+router.patch("/:groupId/addMember", isLoggedIn, groupController.updateGroupMember);
 router.delete("/:groupId", isLoggedIn, groupController.deleteGroup);
 
 router.post("/:groupId/todos", isLoggedIn, todoController.createTodo);
