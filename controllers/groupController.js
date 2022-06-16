@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const mongoose = require("mongoose");
 
 const User = require("../models/User");
@@ -92,10 +93,51 @@ exports.deleteGroup = catchAsync(async (req, res, next) => {
     });
   }
 
+  const group = await Group.findById(groupId).where("members");
+
+  if (group.members.length > 1) {
+    await Group.findByIdAndUpdate(groupId, { $pull: { members: req.user._id } });
+    await User.findByIdAndUpdate(req.user._id, { $pull: { group: groupId } });
+
+    return res.json({ result: "success" });
+  }
+
   const deletedGroup = await Group.findByIdAndDelete(groupId).where("members").size(1);
 
   await Todo.deleteMany({ _id: { $in: deletedGroup.todos } });
   await User.findByIdAndUpdate(req.user._id, { $pull: { group: groupId } });
+
+  return res.json({ result: "success" });
+});
+
+exports.updateGroupMember = catchAsync(async (req, res, next) => {
+  const { groupId } = req.params;
+  const { _id } = req.user;
+
+  if (!mongoose.isValidObjectId(groupId)) {
+    return res.json({
+      result: "error",
+      error: {
+        message: "유효하지 않은 그룹입니다.",
+        status: 400,
+      },
+    });
+  }
+
+  const user = await User.findById(_id).where("group").in(groupId).lean();
+
+  if (user) {
+    return res.json({
+      result: "error",
+      error: {
+        message: "이미 존재하는 그룹입니다.",
+        status: 400,
+      },
+    });
+  }
+
+  await User.findByIdAndUpdate(_id, { $push: { group: groupId } });
+  await Group.findByIdAndUpdate(groupId, { $push: { members: _id } });
 
   return res.json({ result: "success" });
 });
