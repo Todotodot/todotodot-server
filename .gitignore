@@ -1,4 +1,3 @@
-gitignore
 node_modules
 .env
 firebase.json
@@ -7,4 +6,7 @@ firebase.json
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 aws-elastic-beanstalk-cli-setup
+#Archive.zip by AWS
 Archive.zip
+#
+.husky
