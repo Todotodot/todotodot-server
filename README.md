@@ -2,7 +2,7 @@
 
 [나만의 TODOTODOT 만들러 가기](https://www.todotodot.com)
 
-## TODOTODOT 이란?
+## ☑️ TODOTODOT 이란?
 
 TODOTODOT(투둣투둣)은 일반적인 Todo 어플리케이션에 게임의 요소를 가미한 웹 어플리케이션입니다.
 
@@ -17,7 +17,7 @@ TODOTODOT의 핵심 기능은 유저가 Todo를 완료하고 싶으면 게임에
 
 그렇다면 이제 저희 TODOTODOT에 한번 참여해보세요!
 
-## 실행 방법
+## ☑️ 실행 방법
 
 ### 원격 저장소 내려받는 법
 
@@ -47,7 +47,7 @@ npm run dev
 npm test
 ```
 
-## 개발 기간
+## ☑️ 개발 기간
 
 2022년 5월 30일 ~ 2022년 6월 17일
 
@@ -73,7 +73,7 @@ npm test
   - 배포 (Netlify, AWS)
   - 테스트 코드 작성
 
-## 기술 스택
+## ☑️ 기술 스택
 
 ### Deploy : <img alt="AmazonAWS" src ="https://img.shields.io/badge/Amazon_AWS-232F3E?style=for-the-appveyor&logo=amazon-aws&logoColor=white"/>
 
