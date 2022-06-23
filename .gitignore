@@ -1,3 +1,12 @@
 node_modules
 .env
 firebase.json
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+aws-elastic-beanstalk-cli-setup
+#Archive.zip by AWS
+Archive.zip
+#
+.husky

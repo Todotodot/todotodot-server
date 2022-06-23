@@ -6,14 +6,18 @@ const groupSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    members: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    }],
-    todos: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Todo",
-    }],
+    members: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    todos: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Todo",
+      },
+    ],
   },
   {
     versionKey: false,
